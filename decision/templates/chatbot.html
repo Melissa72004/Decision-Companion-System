@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision Chatbot</title>
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: Arial, sans-serif;
+        }
+
+        .chat-container {
+            width: 70%;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .description {
+            background: #eef2f7;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        button {
+            padding: 10px;
+            background: #10a37f;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e7f9f3;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <h2>🤖 Decision Making Chatbot</h2>
+
+    <div class="description">
+        <b>How we calculate score:</b><br>
+        We add all scores for each option across all criteria.<br>
+        The option with the highest total score is selected as the best choice.
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Decision:</label>
+        <input type="text" name="decision" required>
+
+        <label>Criteria (comma separated):</label>
+        <input type="text" id="criteria_input" placeholder="price,battery,performance" required>
+
+        <label>Options (comma separated):</label>
+        <input type="text" id="options_input" placeholder="Dell,HP,Lenovo" required>
+
+        <button type="button" onclick="generateFields()">Generate Score Fields</button>
+
+        <div id="score_fields"></div>
+
+        <button type="submit">Get Best Option</button>
+    </form>
+
+    {% if response %}
+        <div class="response">
+            {{ response }}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function generateFields() {
+    let criteria = document.getElementById("criteria_input").value.split(",");
+    let options = document.getElementById("options_input").value.split(",");
+    let container = document.getElementById("score_fields");
+
+    container.innerHTML = "";
+
+    criteria.forEach(function(c) {
+        let hidden = document.createElement("input");
+        hidden.type = "hidden";
+        hidden.name = "criteria[]";
+        hidden.value = c.trim();
+        container.appendChild(hidden);
+    });
+
+    options.forEach(function(o) {
+        let hidden = document.createElement("input");
+        hidden.type = "hidden";
+        hidden.name = "option[]";
+        hidden.value = o.trim();
+        container.appendChild(hidden);
+    });
+
+    options.forEach(function(option) {
+        let optionTitle = document.createElement("h4");
+        optionTitle.innerText = "Scores for " + option;
+        container.appendChild(optionTitle);
+
+        criteria.forEach(function(criterion) {
+            let label = document.createElement("label");
+            label.innerText = criterion + " score:";
+            container.appendChild(label);
+
+            let input = document.createElement("input");
+            input.type = "number";
+            input.name = "score_" + option.trim() + "_" + criterion.trim();
+            input.required = true;
+            container.appendChild(input);
+        });
+    });
+}
+</script>
+
+</body>
+</html>

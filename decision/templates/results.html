@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision Results</title>
+</head>
+<body>
+
+<h1>Decision: {{ decision.name }}</h1>
+
+{% if best_option %}
+    <h2>🏆 Recommended Option</h2>
+    <h3>{{ best_option.option.name }}</h3>
+    <p><strong>Total Score:</strong> {{ best_option.total }}</p>
+    <p><strong>Why?</strong> {{ explanation }}</p>
+{% endif %}
+
+<hr>
+
+<h2>📊 Ranking</h2>
+
+<table border="1">
+    <tr>
+        <th>Option</th>
+        <th>Total Score</th>
+    </tr>
+
+    {% for result in results %}
+    <tr>
+        <td>{{ result.option.name }}</td>
+        <td>{{ result.total }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/">Back to Home</a>
+
+</body>
+</html>
