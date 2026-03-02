@@ -2,7 +2,7 @@
 
 ## 1. How the Project Started
 
-The Decision project started with the goal of building a structured system that assists users in making informed decisions based on multiple input criteria. 
+The Decision Companion System started with the goal of building a structured system that assists users in making informed decisions based on multiple input criteria. 
 
 Initially, the idea was to design a simple program that takes user input and produces a recommendation using conditional logic. The focus was on creating a clear and understandable decision process rather than building a complex AI model.
 
